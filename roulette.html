@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style Roulette | FADE HUB</title>
+    <meta name="description" content="Not sure what to get? Spin the FADE HUB style roulette.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header solid">
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-box">FH</span>
+            <span class="logo-text">FADE<span>HUB</span></span>
+        </a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navMenu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="nav-menu" id="navMenu">
+            <a href="index.html">Home</a>
+            <a href="index.html#services">Services</a>
+            <a href="index.html#barbers">Barbers</a>
+            <a href="ai-style-finder.html">AI Style Finder</a>
+            <a href="roulette.html" class="active">Style Roulette</a>
+            <a href="index.html#gallery">Gallery</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="booking.html" class="nav-book-btn">Book Now</a>
+        </div>
+    </nav>
+</header>
+
+<section class="roulette-section">
+    <div class="container">
+
+        <div class="roulette-top">
+            <div>
+                <p class="roulette-eyebrow">WHAT SHOULD I GET?</p>
+                <h1 class="roulette-title">LET FATE<br><span>DECIDE.</span></h1>
+            </div>
+            
+        </div>
+
+        <div class="roulette-main">
+
+            <div class="wheel-zone">
+                <div class="wheel-outer">
+                    <div class="wheel-pointer" aria-hidden="true"></div>
+                    <div class="wheel" id="wheel">
+                        <div class="wheel-labels" id="wheelLabels"></div>
+                    </div>
+                    <div class="wheel-hub" aria-hidden="true">
+                        <strong>FADE</strong>
+                        <span>HUB</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="spinBtn">Spin the Wheel ✦</button>
+            </div>
+
+            <div class="roulette-result">
+                <div class="result-icon" aria-hidden="true">✂</div>
+                <h2 class="result-title">YOUR NEXT</h2>
+
+                <div class="result-reveal" id="wheelResult">
+                    <h3 class="result-style" id="wheelStyleName"></h3>
+                    <p id="wheelStyleDesc"></p>
+                    <span class="match-tag" id="wheelMaint"></span>
+                    <div class="result-actions">
+                        <button class="btn btn-outline" id="tryAnotherBtn">Try Another Style</button>
+                        <a href="booking.html" class="btn btn-primary">Book This Style</a>
+                    </div>
+                </div>
+
+                <p class="roulette-note">Take a chance on something new. Every option on the wheel is a real FADE HUB style, ready to book when the pointer stops.</p>
+                <p class="roulette-stats">10 STYLES &nbsp;|&nbsp; 1 SPIN &nbsp;|&nbsp; 0 OVERTHINKING</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <a href="index.html" class="logo">
+                <span class="logo-box">FH</span>
+                <span class="logo-text">FADE<span>HUB</span></span>
+            </a>
+            <p class="footer-tagline">Your Style. Your Fade. Your Hub.</p>
+            <p>Premium cuts, personalized styling, and a smarter way to find your next look.</p>
+        </div>
+        <div class="footer-column">
+            <h4>QUICK LINKS</h4>
+            <a href="index.html">Home</a>
+            <a href="ai-style-finder.html">AI Style Finder</a>
+            <a href="roulette.html">Style Roulette</a>
+            <a href="booking.html">Booking</a>
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="footer-column">
+            <h4>CONTACT</h4>
+            <p>Quezon City, Philippines</p>
+            <p>+63 XXX XXX XXXX</p>
+            <p>hello@fadehub.com</p>
+        </div>
+        <div class="footer-column">
+            <h4>FOLLOW US</h4>
+            <div class="social-links">
+                <a href="#">f</a><a href="#">ig</a><a href="#">tk</a><a href="#">x</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+            <span>© 2026 FADE HUB. All Rights Reserved.</span>
+            <a href="#top">Back to Top ↑</a>
+        </div>
+    </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
