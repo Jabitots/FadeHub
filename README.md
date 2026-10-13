@@ -75,8 +75,19 @@ images/
 
 ## Photo Credits
 
-- [Add the source/photographer for each photo in `images/`, e.g. "Photo by
-  Name on Unsplash"]
+- ## Photo Credits
+
+All hairstyle images used in this project belong to their respective creators and barbers:
+
+- **Blowout Low Taper**: `images/blowout-low-taper.jpg` - Photo source via Pinterest / Instagram
+- **Crew Cut**: `images/crew-cut.jpg` - Barber haircut showcase
+- **French Crop**: `images/french-crop.jpg` - Barber haircut showcase
+- **Pompadour**: `images/pompadour.jpg` - Barber haircut showcase
+- **Side Part**: `images/side-part.jpg` - Barber haircut showcase
+- **Skin Fade**: `images/skin-fade.jpg` - Barber haircut showcase
+- **Slick Back Fade**: `images/slick-back-fade.jpg` - Barber haircut showcase
+- **Textured Crop**: `images/textured-cropped.jpg` - Barber haircut showcase
+- **Warrior Cut**: `images/warrior-cut.jpg` - Photo source via TikTok / Instagram
 
 ## Notes
 
