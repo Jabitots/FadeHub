@@ -1,7 +1,4 @@
-/* =========================================================
-   FADE HUB — GLOBAL STYLES
-   Premium Modern Barbershop
-========================================================= */
+/* FADE HUB — STYLES*/
 
 :root {
     --bg: #0b0b0b;
@@ -302,7 +299,6 @@ ul {
     color: #fff;
 }
 
-.nav-menu > a:hover::after,
 .nav-menu > a.active::after {
     width: 100%;
 }
