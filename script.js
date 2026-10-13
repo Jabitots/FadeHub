@@ -1,12 +1,3 @@
-/* =========================================================
-   FADE HUB — script.js
-   Renders sample data + demonstrates event bubbling & capturing
-========================================================= */
-
-/* ---------------------------------------------------------
-   1. SAMPLE DATA
---------------------------------------------------------- */
-
 const services = [
   { name: "Haircut", price: "₱300", desc: "Classic cut, wash & style" },
   { name: "Haircut + Beard", price: "₱480", desc: "Full cut with beard sculpt" },
@@ -39,9 +30,7 @@ const reviews = [
   { name: "Ethan D.", text: "Clean shop, ganda ng result. Mag bobook ulit ako." },
 ];
 
-/* ---------------------------------------------------------
-   2. RENDER FUNCTIONS
---------------------------------------------------------- */
+/* 2. RENDER FUNCTIONS */
 
 function renderServices() {
   const grid = document.getElementById("servicesGrid");
@@ -111,9 +100,7 @@ renderBarbers();
 renderGallery();
 renderReviews();
 
-/* ---------------------------------------------------------
-   3. TOAST HELPER
---------------------------------------------------------- */
+/*3. TOAST HELPER*/
 
 let toastTimer = null;
 function showToast(message) {
@@ -124,22 +111,7 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-/* ---------------------------------------------------------
-   4. EVENT BUBBLING — event delegation
-   ---------------------------------------------------------
-   Instead of adding a click listener to every single
-   .service-card / .barber-card / .gallery-item (which would
-   mean 4 + 4 + 8 = 16 separate listeners, and more every time
-   the data grows), we add ONE listener on a shared ancestor.
-
-   A click on a child element (e.g. an <h3> inside a card)
-   does not stay on that child — it fires on the <h3>, then
-   BUBBLES UP through every parent (.service-card-content ->
-   .service-card -> .services-grid -> .container -> ...) until
-   it reaches document. We catch it at document level and use
-   event.target.closest() to figure out which card was
-   actually clicked, no matter which inner element started it.
---------------------------------------------------------- */
+/*  4. EVENT BUBBLING — event delegation*/
 
 document.addEventListener("click", (event) => {
   const card = event.target.closest("[data-type]");
@@ -155,24 +127,9 @@ document.addEventListener("click", (event) => {
   } else if (type === "style") {
     showToast(`Liked "${name}"? Try the Style Roulette or AI Style Finder to explore similar cuts.`);
   }
-}, false); // false = respond during the BUBBLING phase (the default)
+}, false); 
 
-/* ---------------------------------------------------------
-   5. EVENT CAPTURING — mobile nav menu
-   ---------------------------------------------------------
-   Capturing is the OPPOSITE direction: the event travels from
-   document DOWN toward the actual target, before bubbling back
-   up. Passing `true` as the third argument to addEventListener
-   makes a listener run in this capture phase.
-
-   We use it here to close the mobile menu on an outside click.
-   Registering this listener on `document` with capture = true
-   guarantees it runs before any bubbling-phase listener below
-   it (like the delegation listener in section 4, or a future
-   listener placed inside the menu) gets a chance to stop the
-   event — so "click outside to close" stays reliable even if
-   other click handling is added to the menu later.
---------------------------------------------------------- */
+/*  5. EVENT CAPTURING — mobile nav menu*/
 
 const menuToggle = document.getElementById("menuToggle");
 const navMenu = document.getElementById("navMenu");
@@ -182,12 +139,14 @@ function openMenu() {
   navMenu.classList.add("open");
   menuToggle.classList.add("open");
   menuToggle.setAttribute("aria-expanded", "true");
+  menuToggle.setAttribute("aria-label", "Close navigation");
 }
 
 function closeMenu() {
   navMenu.classList.remove("open");
   menuToggle.classList.remove("open");
   menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.setAttribute("aria-label", "Open navigation");
 }
 
 menuToggle.addEventListener("click", (event) => {
@@ -198,7 +157,11 @@ menuToggle.addEventListener("click", (event) => {
 });
 
 document.addEventListener("click", (event) => {
-  if (navMenu.classList.contains("open") && !navMenu.contains(event.target)) {
+  if (
+    navMenu.classList.contains("open") &&
+    !navMenu.contains(event.target) &&
+    !menuToggle.contains(event.target)
+  ) {
     closeMenu();
   }
 }, true); // true = CAPTURING phase, runs on the way down, before bubbling listeners
@@ -207,11 +170,9 @@ document.addEventListener("click", (event) => {
 navMenu.addEventListener("click", (event) => {
   if (event.target.tagName === "A") closeMenu();
 });
-} // end menuToggle && navMenu guard
+}
 
-/* ---------------------------------------------------------
-   6. ACTIVE NAV LINK ON SCROLL
---------------------------------------------------------- */
+/*  6. ACTIVE NAV LINK ON SCROLL*/
 
 const sections = document.querySelectorAll("section[id]");
 const navLinks = document.querySelectorAll(".nav-menu > a[href^='#']");
@@ -229,9 +190,7 @@ if (sections.length && navLinks.length) {
   sections.forEach((section) => observer.observe(section));
 }
 
-/* ---------------------------------------------------------
-   7. STYLE ROULETTE (pages/roulette.html)
---------------------------------------------------------- */
+/* 7. STYLE ROULETTE (pages/roulette.html)*/
 
 const rouletteStyles = [
   { name: "Low Taper Fade", desc: "Subtle fade that stays close to the natural hairline.", maint: "Low" },
@@ -250,7 +209,6 @@ const wheel = document.getElementById("wheel");
 const spinBtn = document.getElementById("spinBtn");
 
 if (wheel && spinBtn) {
-  // build the wheel's conic-gradient slices + labels to match rouletteStyles
   const segAngle = 360 / rouletteStyles.length;
   const colors = ["#d5a354", "#171717"]; // alternating gold / dark slices
   const gradient = rouletteStyles.map((_, i) =>
@@ -262,7 +220,6 @@ if (wheel && spinBtn) {
   if (labelsEl) {
     labelsEl.innerHTML = rouletteStyles.map((s, i) => {
       const angle = i * segAngle + segAngle / 2;
-      // labels on the left half would read upside-down, so flip them upright
       const flip = angle > 180 ? " flip" : "";
       const onGold = colors[i % colors.length] === "#d5a354";
       return `<div class="wheel-label${flip}" style="transform: rotate(${angle - 90}deg); color:${onGold ? "#111" : "#fff"};"><span>${s.name}</span></div>`;
@@ -300,12 +257,7 @@ if (wheel && spinBtn) {
   document.getElementById("tryAnotherBtn")?.addEventListener("click", spinWheel);
 }
 
-/* ---------------------------------------------------------
-   8. AI STYLE FINDER (pages/ai-style-finder.html)
-   ---------------------------------------------------------
-   Uses event delegation (bubbling, section 4's pattern) on the
-   whole quiz form instead of one listener per option button.
---------------------------------------------------------- */
+/* 8. AI STYLE FINDER (pages/ai-style-finder.html)*/
 
 const styleLibrary = [
   { name: "Textured Crop", desc: "Matte, choppy texture that suits most face shapes.", maint: "Low", tags: ["Casual", "Trendy", "Low"] },
@@ -322,8 +274,6 @@ const quizForm = document.getElementById("quizForm");
 if (quizForm) {
   const answers = {};
 
-  // one delegated listener for every option button in the quiz —
-  // bubbling means we don't need a listener on each individual button
   quizForm.addEventListener("click", (event) => {
     const opt = event.target.closest(".quiz-opt");
     if (!opt) return;
@@ -365,13 +315,7 @@ if (quizForm) {
   });
 }
 
-/* ---------------------------------------------------------
-   9. BOOKING FORM (pages/booking.html)
-   ---------------------------------------------------------
-   Confirmed bookings are saved to localStorage so the
-   Dashboard page can show the "Upcoming Appointment" after
-   navigating away — a small persistence layer between pages.
---------------------------------------------------------- */
+/* 9. BOOKING FORM (pages/booking.html) */
 
 const bookingForm = document.getElementById("bookingForm");
 
@@ -382,7 +326,6 @@ if (bookingForm) {
   serviceSelect.innerHTML = services.map(s => `<option>${s.name}</option>`).join("");
   barberSelect.innerHTML = barbers.map(b => `<option>${b.name}</option>`).join("") + `<option>Any available</option>`;
 
-  // pre-fill from a "Book Again" link, e.g. booking.html?service=..&barber=..&style=..
   const params = new URLSearchParams(location.search);
   if (params.get("service")) serviceSelect.value = params.get("service");
   if (params.get("barber")) barberSelect.value = params.get("barber");
@@ -408,9 +351,7 @@ if (bookingForm) {
   });
 }
 
-/* ---------------------------------------------------------
-   10. DASHBOARD (pages/dashboard.html)
---------------------------------------------------------- */
+/*10. DASHBOARD (pages/dashboard.html) */
 
 const dashUpcoming = document.getElementById("dashUpcoming");
 
