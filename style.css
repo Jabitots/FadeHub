@@ -1,4 +1,6 @@
-/* FADE HUB — STYLES*/
+/* =========================================================
+   FADE HUB STYLES
+========================================================= */
 
 :root {
     --bg: #0b0b0b;
@@ -299,6 +301,7 @@ ul {
     color: #fff;
 }
 
+.nav-menu > a:hover::after,
 .nav-menu > a.active::after {
     width: 100%;
 }
@@ -1759,20 +1762,17 @@ ul {
 }
 
 .fav-thumb {
-    height: 220px;
+    height: 200px;
     margin-bottom: 12px;
-    background: linear-gradient(160deg, #2b2419, #171410 70%);
     overflow: hidden;
+    background: linear-gradient(160deg, #2b2419, #171410 70%);
 }
 
 .fav-thumb img {
+    width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 25%;
-}
-
-.fav-thumb--lower img {
-    object-position: center 35%;
+    object-position: center 15%;
 }
 
 .fav-card p {
@@ -1798,70 +1798,18 @@ ul {
 }
 
 /* =========================================================
-   ROULETTE PAGE — DARK THEME (roulette.html)
-   Same palette, buttons, and heading style as the dashboard
+   ROULETTE PAGE (roulette.html)
+   Same page-hero, stat-row, dash-grid, cards, and buttons
+   as dashboard.html — only the wheel itself is new
 ========================================================= */
 
-.site-header.solid {
-    position: relative;
-    background: var(--bg);
-}
-
-.roulette-section {
-    padding: 80px 0 110px;
-    background: var(--bg);
-    color: var(--text);
-}
-
-.roulette-top {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: end;
-    margin-bottom: 56px;
-}
-
-.roulette-eyebrow {
-    margin-bottom: 14px;
-    color: var(--accent);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-}
-
-.roulette-title {
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: clamp(3.8rem, 9vw, 6.6rem);
-    font-weight: 800;
-    line-height: 0.86;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-}
-
-.roulette-title span {
-    color: var(--accent);
-}
-
-.roulette-intro {
-    max-width: 340px;
-    justify-self: end;
-    color: var(--muted);
-    font-size: 0.9rem;
-}
-
-.roulette-main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+.wheel-card {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-}
-
-.roulette-main .wheel-zone {
-    width: 340px;
     gap: 46px;
+    padding: 56px 26px 44px;
 }
-
-/* ---- wheel ---- */
 
 .roulette-section .wheel-outer {
     width: 340px;
@@ -1932,52 +1880,21 @@ ul {
     letter-spacing: 0.06em;
 }
 
-/* ---- result panel ---- */
+/* ---- result card ---- */
 
-.roulette-result {
-    max-width: 440px;
-}
-
-.result-icon {
-    width: 34px;
-    height: 34px;
-    margin-bottom: 26px;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(213, 163, 84, 0.4);
-    color: var(--accent);
-    font-size: 1rem;
-}
-
-.result-title {
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: clamp(3.4rem, 7vw, 5.4rem);
-    font-weight: 500;
-    line-height: 0.9;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    color: #fff;
-}
-
-/* space is reserved so the layout doesn't jump when a style is revealed */
 .result-reveal {
-    min-height: 210px;
-    padding-top: 10px;
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: none;
+    margin-top: 14px;
 }
 
 .result-reveal.show {
-    visibility: visible;
-    opacity: 1;
-    transform: none;
+    display: block;
+    animation: fadeUp 0.5s ease both;
 }
 
-.result-style {
+.roulette-section .result-style {
     font-family: "Barlow Condensed", sans-serif;
-    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    font-size: clamp(2.2rem, 4vw, 3rem);
     font-weight: 800;
     line-height: 0.95;
     text-transform: uppercase;
@@ -1994,47 +1911,27 @@ ul {
     flex-wrap: wrap;
 }
 
-.roulette-note {
-    margin-top: 22px;
-    max-width: 340px;
+.result-placeholder {
+    margin-top: 14px;
     color: var(--muted);
     font-size: 0.85rem;
 }
 
-.roulette-stats {
-    margin-top: 20px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    color: rgba(255, 255, 255, 0.45);
+/* hide the placeholder once a style is revealed */
+.result-reveal.show + .result-placeholder {
+    display: none;
 }
 
-@media (max-width: 900px) {
-    .roulette-top,
-    .roulette-main {
-        grid-template-columns: 1fr;
-    }
-
-    .roulette-intro {
-        justify-self: start;
-    }
-
-    .roulette-main .wheel-zone {
-        margin: 0 auto;
-    }
-
-    .roulette-result {
-        max-width: none;
-    }
+.roulette-note {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.7;
 }
 
 @media (max-width: 430px) {
-    .roulette-main .wheel-zone,
     .roulette-section .wheel-outer {
         width: 290px;
-    }
-
-    .roulette-section .wheel-outer {
         height: 290px;
     }
 
@@ -2342,4 +2239,17 @@ button:focus-visible {
         left: 30px;
         bottom: 30px;
     }
+}
+
+/* favorites: keep two columns on tablet, one on small phones */
+@media (max-width: 900px) {
+    .fav-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 430px) {
+    .fav-grid { grid-template-columns: 1fr; }
+}
+
+/* time slots that already passed today */
+.field select option:disabled {
+    color: #666;
 }
