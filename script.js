@@ -127,7 +127,7 @@ document.addEventListener("click", (event) => {
   } else if (type === "style") {
     showToast(`Liked "${name}"? Try the Style Roulette or AI Style Finder to explore similar cuts.`);
   }
-}, false); 
+}, false); // false = respond during the BUBBLING phase (the default)
 
 /*  5. EVENT CAPTURING — mobile nav menu*/
 
@@ -170,7 +170,7 @@ document.addEventListener("click", (event) => {
 navMenu.addEventListener("click", (event) => {
   if (event.target.tagName === "A") closeMenu();
 });
-}
+} // end menuToggle && navMenu guard
 
 /*  6. ACTIVE NAV LINK ON SCROLL*/
 
@@ -209,6 +209,7 @@ const wheel = document.getElementById("wheel");
 const spinBtn = document.getElementById("spinBtn");
 
 if (wheel && spinBtn) {
+  // build the wheel's conic-gradient slices + labels to match rouletteStyles
   const segAngle = 360 / rouletteStyles.length;
   const colors = ["#d5a354", "#171717"]; // alternating gold / dark slices
   const gradient = rouletteStyles.map((_, i) =>
@@ -220,6 +221,7 @@ if (wheel && spinBtn) {
   if (labelsEl) {
     labelsEl.innerHTML = rouletteStyles.map((s, i) => {
       const angle = i * segAngle + segAngle / 2;
+      // labels on the left half would read upside-down, so flip them upright
       const flip = angle > 180 ? " flip" : "";
       const onGold = colors[i % colors.length] === "#d5a354";
       return `<div class="wheel-label${flip}" style="transform: rotate(${angle - 90}deg); color:${onGold ? "#111" : "#fff"};"><span>${s.name}</span></div>`;
@@ -274,6 +276,8 @@ const quizForm = document.getElementById("quizForm");
 if (quizForm) {
   const answers = {};
 
+  // one delegated listener for every option button in the quiz —
+  // bubbling means we don't need a listener on each individual button
   quizForm.addEventListener("click", (event) => {
     const opt = event.target.closest(".quiz-opt");
     if (!opt) return;
@@ -326,17 +330,76 @@ if (bookingForm) {
   serviceSelect.innerHTML = services.map(s => `<option>${s.name}</option>`).join("");
   barberSelect.innerHTML = barbers.map(b => `<option>${b.name}</option>`).join("") + `<option>Any available</option>`;
 
+  // pre-fill from a "Book Again" link, e.g. booking.html?service=..&barber=..&style=..
   const params = new URLSearchParams(location.search);
   if (params.get("service")) serviceSelect.value = params.get("service");
   if (params.get("barber")) barberSelect.value = params.get("barber");
   if (params.get("style")) document.getElementById("fNotes").value = `Rebooking: ${params.get("style")}`;
 
+  // ---- no booking in the past ----
+  const dateInput = document.getElementById("fDate");
+  const timeSelect = document.getElementById("fTime");
+
+  // today as YYYY-MM-DD in the user's LOCAL time
+  // (toISOString() uses UTC and can be a day off in the Philippines)
+  function todayISO() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+
+  // "1:00 PM" -> minutes since midnight
+  function slotMinutes(label) {
+    const [, h, m, ap] = label.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    return ((Number(h) % 12) + (ap.toUpperCase() === "PM" ? 12 : 0)) * 60 + Number(m);
+  }
+
+  function nowMinutes() {
+    const n = new Date();
+    return n.getHours() * 60 + n.getMinutes();
+  }
+
+  // greys out past dates in the date picker
+  dateInput.min = todayISO();
+
+  // if the chosen day is today, disable time slots that already passed
+  function refreshTimeSlots() {
+    const isToday = dateInput.value === todayISO();
+    [...timeSelect.options].forEach(o => {
+      o.disabled = isToday && slotMinutes(o.value) <= nowMinutes();
+    });
+    if (timeSelect.selectedOptions[0]?.disabled || timeSelect.selectedIndex === -1) {
+      const firstOpen = [...timeSelect.options].find(o => !o.disabled);
+      if (firstOpen) {
+        timeSelect.value = firstOpen.value;
+      } else {
+        timeSelect.selectedIndex = -1;
+        showToast("No time slots left today. Please pick another date.");
+      }
+    }
+  }
+  dateInput.addEventListener("change", refreshTimeSlots);
+
   document.getElementById("confirmBookingBtn").addEventListener("click", () => {
+    const chosenDate = dateInput.value;
+    if (!chosenDate) {
+      showToast("Please choose a date for your appointment.");
+      return;
+    }
+    // ISO dates compare correctly as plain strings
+    if (chosenDate < todayISO()) {
+      showToast("That date has already passed. Please pick today or a later date.");
+      return;
+    }
+    if (!timeSelect.value || (chosenDate === todayISO() && slotMinutes(timeSelect.value) <= nowMinutes())) {
+      showToast("That time has already passed. Please pick another time or date.");
+      return;
+    }
+
     const booking = {
       service: serviceSelect.value,
       barber: barberSelect.value,
-      date: document.getElementById("fDate").value || "Today",
-      time: document.getElementById("fTime").value,
+      date: chosenDate,
+      time: timeSelect.value,
       notes: document.getElementById("fNotes").value,
     };
     localStorage.setItem("fadehub_upcoming", JSON.stringify(booking));
