@@ -1,3 +1,20 @@
+(function addFavicon() {
+ 
+  if (document.querySelector('link[rel~="icon"]')) return;
+
+  const icons = [
+    { rel: "icon", href: "image/favicon.svg", type: "image/svg+xml" },
+    { rel: "icon", href: "image/favicon.ico", sizes: "any" },
+    { rel: "apple-touch-icon", href: "image/apple-touch-icon.png" },
+  ];
+
+  icons.forEach((attrs) => {
+    const link = document.createElement("link");
+    Object.entries(attrs).forEach(([key, value]) => link.setAttribute(key, value));
+    document.head.appendChild(link);
+  });
+})();
+
 const services = [
   { name: "Haircut", price: "₱300", desc: "Classic cut, wash & style" },
   { name: "Haircut + Beard", price: "₱480", desc: "Full cut with beard sculpt" },
