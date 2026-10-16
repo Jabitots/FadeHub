@@ -1,5 +1,6 @@
 /* =========================================================
-   FADE HUB STYLES
+   FADE HUB — GLOBAL STYLES
+   Premium Modern Barbershop
 ========================================================= */
 
 :root {
@@ -2241,15 +2242,12 @@ button:focus-visible {
     }
 }
 
-/* favorites: keep two columns on tablet, one on small phones */
 @media (max-width: 900px) {
     .fav-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 430px) {
     .fav-grid { grid-template-columns: 1fr; }
 }
-
-/* time slots that already passed today */
 .field select option:disabled {
     color: #666;
 }
